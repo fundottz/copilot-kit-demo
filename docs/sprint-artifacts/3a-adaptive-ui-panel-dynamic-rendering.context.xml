@@ -1,0 +1,234 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>3</epicId>
+    <storyId>a</storyId>
+    <title>Adaptive UI Panel Dynamic Rendering</title>
+    <status>drafted</status>
+    <generatedAt>2025-11-24</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/3a-adaptive-ui-panel-dynamic-rendering.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>Frontend Developer</asA>
+    <iWant>implement dynamic component rendering logic in AdaptiveUIPanel using a component registry system</iWant>
+    <soThat>different UI components can be rendered dynamically based on AG-UI events without hardcoding component types</soThat>
+    <tasks>
+      <taskGroup name="UIComponentRegistry Service" ac="1">
+        <task>Создать src/services/UIComponentRegistry.ts с Map-based registry</task>
+        <task>Реализовать register(type, component) метод</task>
+        <task>Реализовать get(type) метод для получения компонента</task>
+        <task>Добавить TypeScript интерфейс ComponentPlugin</task>
+        <task>Экспортировать singleton instance через barrel export</task>
+      </taskGroup>
+      <taskGroup name="DynamicComponent Wrapper" ac="2">
+        <task>Создать src/components/DynamicComponent.tsx</task>
+        <task>Принимать config prop с { type, id, props }</task>
+        <task>Использовать UIComponentRegistry.get(type) для получения component</task>
+        <task>Render компонент с переданными props</task>
+        <task>Обработать случай когда component type не зарегистрирован</task>
+      </taskGroup>
+      <taskGroup name="Plugin System Integration" ac="3,6">
+        <task>Создать src/types/components.ts с ComponentPlugin interface</task>
+        <task>Создать src/types/components.ts с ComponentConfig interface</task>
+        <task>Зарегистрировать placeholder компонент для demo (например, SimpleCard)</task>
+        <task>Создать SimpleCard.tsx как первый demo plugin</task>
+        <task>Документировать plugin registration pattern в Dev Notes</task>
+      </taskGroup>
+      <taskGroup name="Event-Driven Rendering Logic" ac="4,5">
+        <task>Обновить useAdaptiveUI hook для обработки STATE_DELTA events</task>
+        <task>Парсить event data для извлечения component configs</task>
+        <task>Добавить/обновить компоненты в state array</task>
+        <task>Реализовать removeComponent функцию для cleanup</task>
+        <task>Добавить unique key generation для React list rendering</task>
+      </taskGroup>
+      <taskGroup name="AdaptiveUIPanel Updates" ac="7,8">
+        <task>Обновить AdaptiveUIPanel для mapping components array</task>
+        <task>Render DynamicComponent для каждого item в array</task>
+        <task>Добавить empty state UI когда components.length === 0</task>
+        <task>Обернуть каждый DynamicComponent в ErrorBoundary</task>
+        <task>Добавить Tailwind styling для component spacing</task>
+      </taskGroup>
+      <taskGroup name="Testing & Validation">
+        <task>Unit test для UIComponentRegistry (register/get methods)</task>
+        <task>Component test для DynamicComponent с mock plugin</task>
+        <task>Test useAdaptiveUI hook с mock STATE_DELTA event</task>
+        <task>Manual test: trigger fake event и verify component появляется</task>
+        <task>Test error handling когда component type не найден</task>
+      </taskGroup>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="1">Component Registry: UIComponentRegistry service создан для регистрации и получения UI component plugins</criterion>
+    <criterion id="2">Dynamic Component Wrapper: DynamicComponent wrapper создан для rendering любых зарегистрированных компонентов</criterion>
+    <criterion id="3">Plugin Registration: Базовая регистрация компонента (placeholder) для демонстрации системы</criterion>
+    <criterion id="4">Event-Driven Rendering: AdaptiveUIPanel слушает AG-UI STATE_DELTA events и рендерит компоненты</criterion>
+    <criterion id="5">Component Lifecycle: Компоненты добавляются/удаляются из panel на основе event data</criterion>
+    <criterion id="6">Type Safety: TypeScript интерфейсы для plugin system (ComponentPlugin, ComponentConfig)</criterion>
+    <criterion id="7">Empty State Handling: Panel показывает полезное сообщение когда нет активных компонентов</criterion>
+    <criterion id="8">Error Resilience: Ошибки rendering одного компонента не ломают весь panel</criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/tech-spec.md</path>
+        <title>Technical Specification - Plugin-based UI System</title>
+        <section>Technical Approach - Plugin-based UI система</section>
+        <snippet>UIComponentPlugin интерфейс с trigger, generate, mockData. Extensible registry для Map-based component storage. Plugin registration pattern для новых UI типов.</snippet>
+      </doc>
+      <doc>
+        <path>docs/tech-spec.md</path>
+        <title>Technical Specification - Dynamic Rendering</title>
+        <section>Implementation Guide - React компоненты с AG-UI интеграцией</section>
+        <snippet>AdaptiveUIPanel использует useAdaptiveUI hook. Components map для rendering DynamicComponent items. Key-based React list rendering.</snippet>
+      </doc>
+      <doc>
+        <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+        <title>Epic Technical Specification</title>
+        <section>Data Models - UI Component Plugin</section>
+        <snippet>interface UIComponentPlugin { type: string; trigger: (message: string) => boolean; component: React.ComponentType; mockData?: any; }</snippet>
+      </doc>
+      <doc>
+        <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+        <title>Epic Technical Specification</title>
+        <section>Services - UIComponentRegistry</section>
+        <snippet>Реестр UI компонентов для plugin system. Регистрация и получение React components по type string.</snippet>
+      </doc>
+      <doc>
+        <path>docs/sprint-artifacts/2a-chat-interface-copilotkit-integration.md</path>
+        <title>Story 2a - Architecture Patterns</title>
+        <section>AG-UI Event Flow</section>
+        <snippet>STATE_DELTA events обрабатываются в useAdaptiveUI hook. Hook updates state → AdaptiveUIPanel rerenders. Dynamic component появляется в panel.</snippet>
+      </doc>
+    </docs>
+
+    <code>
+      <artifact>
+        <path>frontend-dev/src/components/AdaptiveUIPanel.tsx</path>
+        <kind>component</kind>
+        <symbol>AdaptiveUIPanel</symbol>
+        <lines>all</lines>
+        <reason>Существует из Story 2a. Требует модификации для добавления dynamic component mapping и rendering logic.</reason>
+      </artifact>
+      <artifact>
+        <path>frontend-dev/src/hooks/useAdaptiveUI.ts</path>
+        <kind>hook</kind>
+        <symbol>useAdaptiveUI</symbol>
+        <lines>all</lines>
+        <reason>Создан в Story 2a. Требует расширения для обработки STATE_DELTA events и управления component lifecycle.</reason>
+      </artifact>
+      <artifact>
+        <path>frontend-dev/src/components/ErrorBoundary.tsx</path>
+        <kind>component</kind>
+        <symbol>ErrorBoundary</symbol>
+        <lines>all</lines>
+        <reason>Создан в Story 2a. Будет использоваться для wrapping каждого DynamicComponent для error isolation.</reason>
+      </artifact>
+      <artifact>
+        <path>frontend-dev/src/types/components.ts</path>
+        <kind>types</kind>
+        <symbol>ComponentPlugin, ComponentConfig</symbol>
+        <lines>all</lines>
+        <reason>Типы определены в Story 2a. Требуется добавить ComponentPlugin и ComponentConfig interfaces для plugin system.</reason>
+      </artifact>
+      <artifact>
+        <path>frontend-dev/src/types/agui.ts</path>
+        <kind>types</kind>
+        <symbol>AGUIEvent, STATE_DELTA</symbol>
+        <lines>all</lines>
+        <reason>AG-UI event types из Story 2a. STATE_DELTA тип уже определен, нужен для event handling в hook.</reason>
+      </artifact>
+    </code>
+
+    <dependencies>
+      <ecosystem name="Node.js/React">
+        <package name="react" version="^18.2.0" purpose="React framework для component rendering" />
+        <package name="react-dom" version="^18.2.0" purpose="React DOM renderer" />
+        <package name="typescript" version="^5.1.0" purpose="TypeScript strict typing для plugin interfaces" />
+        <package name="tailwindcss" version="^3.3.0" purpose="Styling для component spacing и empty states" />
+        <package name="@ag-ui/client" version="^0.0.41" purpose="AG-UI client для STATE_DELTA events" />
+        <package name="@ag-ui/core" version="^0.0.41" purpose="AG-UI core types" />
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint type="architecture">Plugin Architecture: Map-based registry для extensible component system</constraint>
+    <constraint type="architecture">Dynamic Rendering: React.createElement pattern для runtime component creation</constraint>
+    <constraint type="architecture">Error Isolation: Каждый DynamicComponent в отдельном ErrorBoundary</constraint>
+    <constraint type="code-style">TypeScript Generics: Type-safe plugin props через generic interfaces</constraint>
+    <constraint type="code-style">Singleton Pattern: UIComponentRegistry как singleton instance</constraint>
+    <constraint type="dependency">Story 2a Dependency: AdaptiveUIPanel, useAdaptiveUI, ErrorBoundary уже созданы</constraint>
+    <constraint type="dependency">Story 1b Dependency: STATE_DELTA events могут не приходить если backend не готов</constraint>
+    <constraint type="testing">Jest Not Configured: Manual testing через console и Browser DevTools</constraint>
+    <constraint type="patterns">Component Decoupling: Plugins не знают о AdaptiveUIPanel, только о registry</constraint>
+  </constraints>
+
+  <interfaces>
+    <interface>
+      <name>UIComponentRegistry</name>
+      <kind>Service Singleton</kind>
+      <signature>class UIComponentRegistry { static getInstance(): UIComponentRegistry; register(type: string, component: React.ComponentType): void; get(type: string): React.ComponentType | undefined; }</signature>
+      <path>src/services/UIComponentRegistry.ts (to be created)</path>
+      <usage>Centralized registry для всех UI component plugins</usage>
+    </interface>
+    <interface>
+      <name>ComponentPlugin</name>
+      <kind>TypeScript Interface</kind>
+      <signature>interface ComponentPlugin { type: string; component: React.ComponentType&lt;any&gt;; mockData?: any; }</signature>
+      <path>src/types/components.ts (to be updated)</path>
+      <usage>Описание plugin для registration в registry</usage>
+    </interface>
+    <interface>
+      <name>ComponentConfig</name>
+      <kind>TypeScript Interface</kind>
+      <signature>interface ComponentConfig { id: string; type: string; props: any; }</signature>
+      <path>src/types/components.ts (to be updated)</path>
+      <usage>Runtime configuration для rendering dynamic component</usage>
+    </interface>
+    <interface>
+      <name>DynamicComponent</name>
+      <kind>React Component</kind>
+      <signature>&lt;DynamicComponent config={ComponentConfig} /&gt;</signature>
+      <path>src/components/DynamicComponent.tsx (to be created)</path>
+      <usage>Wrapper для dynamic rendering зарегистрированных компонентов</usage>
+    </interface>
+    <interface>
+      <name>useAdaptiveUI (extended)</name>
+      <kind>React Hook</kind>
+      <signature>function useAdaptiveUI(): { components: ComponentConfig[]; addComponent: (config: ComponentConfig) => void; removeComponent: (id: string) => void; }</signature>
+      <path>src/hooks/useAdaptiveUI.ts (to be extended)</path>
+      <usage>Extended hook с STATE_DELTA event handling и component lifecycle methods</usage>
+    </interface>
+  </interfaces>
+
+  <tests>
+    <standards>
+      Manual testing approach (Jest не настроен):
+      - Browser Console для testing registry operations (register/get)
+      - React DevTools для проверки component tree и props
+      - Artificial STATE_DELTA event creation через console
+      - Visual verification component rendering в AdaptiveUIPanel
+      - Error simulation для testing ErrorBoundary wrapping
+    </standards>
+
+    <locations>
+      <location>frontend-dev/src/**/__tests__/**/*.test.{ts,tsx}</location>
+      <location>frontend-dev/src/**/*.test.{ts,tsx}</location>
+    </locations>
+
+    <ideas>
+      <idea ac="1">Manual: Test UIComponentRegistry.register() и get() через console - verify component stored/retrieved</idea>
+      <idea ac="2">Component test (future): Render DynamicComponent с mock config и verify correct component rendered</idea>
+      <idea ac="3">Manual: Register SimpleCard plugin и verify в registry через console log</idea>
+      <idea ac="4">Manual: Trigger mock STATE_DELTA event с component config → verify component appears в panel</idea>
+      <idea ac="5">Manual: Add multiple components → remove one → verify correct component removed</idea>
+      <idea ac="6">TypeScript: Verify ComponentPlugin и ComponentConfig interfaces compile без errors</idea>
+      <idea ac="7">Visual test: Clear all components → verify empty state message показывается</idea>
+      <idea ac="8">Error test: Throw error в SimpleCard component → verify ErrorBoundary catches и shows fallback</idea>
+      <idea ac="integration">Manual: Full flow - register plugin, trigger STATE_DELTA, render component, remove component</idea>
+    </ideas>
+  </tests>
+</story-context>

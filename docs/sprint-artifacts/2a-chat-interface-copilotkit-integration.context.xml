@@ -1,0 +1,258 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>2</epicId>
+    <storyId>a</storyId>
+    <title>Chat Interface с CopilotKit Integration</title>
+    <status>drafted</status>
+    <generatedAt>2025-11-24</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/2a-chat-interface-copilotkit-integration.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>Frontend Developer</asA>
+    <iWant>integrate CopilotKit chat interface with AG-UI WebSocket connection and create the adaptive UI panel layout</iWant>
+    <soThat>operators can communicate with AI and see dynamically generated UI components in real-time</soThat>
+    <tasks>
+      <taskGroup name="CopilotKit Setup & Configuration" ac="1,2">
+        <task>Обернуть App.tsx в CopilotKit provider с URL backend</task>
+        <task>Настроить CopilotChat component с базовыми props</task>
+        <task>Проверить WebSocket connection в DevTools</task>
+        <task>Добавить error handling для connection failures</task>
+      </taskGroup>
+      <taskGroup name="Adaptive UI Panel Component" ac="3,4">
+        <task>Создать AdaptiveUIPanel.tsx с базовой разметкой</task>
+        <task>Реализовать flexbox layout для chat + panel</task>
+        <task>Сделать responsive design (работает на mobile/desktop)</task>
+        <task>Добавить placeholder content для пустого состояния</task>
+      </taskGroup>
+      <taskGroup name="AG-UI Hook & State Management" ac="5,6">
+        <task>Создать useAdaptiveUI.ts hook с useState для components array</task>
+        <task>Настроить AgUiClient service для WebSocket соединения</task>
+        <task>Добавить event listeners для AG-UI events (TOOL_CALL_START, STATE_DELTA)</task>
+        <task>Реализовать updateComponent функцию для динамического добавления компонентов</task>
+      </taskGroup>
+      <taskGroup name="TypeScript Type Definitions" ac="8">
+        <task>Создать src/types/agui.ts с AG-UI event types (AGUIEvent, ToolCallStart, StateDelta)</task>
+        <task>Создать src/types/components.ts с UI component types (UIComponent, ComponentPlugin)</task>
+        <task>Создать src/types/api.ts с API response types (ComponentIntent)</task>
+        <task>Экспортировать все типы через barrel export (src/types/index.ts)</task>
+      </taskGroup>
+      <taskGroup name="Error Handling & Boundaries" ac="7">
+        <task>Создать ErrorBoundary component для graceful degradation</task>
+        <task>Обернуть AdaptiveUIPanel в error boundary</task>
+        <task>Добавить fallback UI для error states</task>
+        <task>Логировать errors в console для debugging</task>
+      </taskGroup>
+      <taskGroup name="Testing & Validation">
+        <task>Написать unit test для useAdaptiveUI hook</task>
+        <task>Создать component test для AdaptiveUIPanel rendering</task>
+        <task>Проверить WebSocket connection manually</task>
+        <task>Тестировать responsive layout на разных размерах экрана</task>
+        <task>Проверить error boundary behavior при симуляции ошибок</task>
+      </taskGroup>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="1">CopilotKit Integration: CopilotKit provider настроен с подключением к backend AG-UI endpoint (http://localhost:5001/api/agui)</criterion>
+    <criterion id="2">Chat Interface: CopilotChat component отображается и позволяет ввод/отправку сообщений</criterion>
+    <criterion id="3">Adaptive UI Panel: AdaptiveUIPanel component создан и отображается рядом с chat интерфейсом</criterion>
+    <criterion id="4">Layout Structure: Responsive layout с chat слева и adaptive panel справа (flexbox)</criterion>
+    <criterion id="5">WebSocket Connection: AG-UI WebSocket соединение устанавливается при загрузке приложения</criterion>
+    <criterion id="6">Basic State Management: useAdaptiveUI hook создан для управления состоянием dynamic компонентов</criterion>
+    <criterion id="7">Error Boundaries: React error boundary обрабатывает сбои компонентов без крушения всего UI</criterion>
+    <criterion id="8">TypeScript Types: Все AG-UI event types и component types определены в src/types/</criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/tech-spec.md</path>
+        <title>Technical Specification - Quick Flow</title>
+        <section>Implementation Guide - Step 1: Базовый Chat Interface</section>
+        <snippet>Интеграция CopilotKit provider с AG-UI endpoint, создание базового layout с CopilotChat и AdaptiveUIPanel компонентами. Flexbox layout для responsive дизайна.</snippet>
+      </doc>
+      <doc>
+        <path>docs/tech-spec.md</path>
+        <title>Technical Specification - Quick Flow</title>
+        <section>Implementation Guide - Step 4: AG-UI Integration</section>
+        <snippet>useAdaptiveUI hook для управления dynamic UI components через AG-UI WebSocket events. Event listeners для TOOL_CALL_START и STATE_DELTA events.</snippet>
+      </doc>
+      <doc>
+        <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+        <title>Epic Technical Specification</title>
+        <section>Data Models and Contracts</section>
+        <snippet>TypeScript типы для AG-UI events (AGUIEvent, ComponentIntent, UIComponentPlugin), определения интерфейсов для WebSocket коммуникации и plugin архитектуры.</snippet>
+      </doc>
+      <doc>
+        <path>docs/sprint-artifacts/tech-spec-epic-1.md</path>
+        <title>Epic Technical Specification</title>
+        <section>APIs and Interfaces - WebSocket AG-UI Events</section>
+        <snippet>AG-UI event flow: TEXT_MESSAGE_CONTENT → TOOL_CALL_START → STATE_DELTA → TOOL_CALL_END. WebSocket протокол для real-time коммуникации между frontend и backend.</snippet>
+      </doc>
+      <doc>
+        <path>docs/sprint-artifacts/1a-frontend-setup-base-components.md</path>
+        <title>Story 1a - Completion Notes</title>
+        <section>Completion Notes List</section>
+        <snippet>Правильные пакеты: @ag-ui/client + @ag-ui/core v0.0.41, CopilotKit v1.10.6. Technical debt: Jest не настроен, использовать manual testing.</snippet>
+      </doc>
+    </docs>
+
+    <code>
+      <artifact>
+        <path>frontend-dev/src/App.tsx</path>
+        <kind>component</kind>
+        <symbol>App</symbol>
+        <lines>1-60</lines>
+        <reason>Существующий entry point с CopilotKit provider и placeholder layout. Требует модификации для добавления реального CopilotChat component и интеграции с AG-UI.</reason>
+      </artifact>
+      <artifact>
+        <path>frontend-dev/src/components/Layout.tsx</path>
+        <kind>component</kind>
+        <symbol>Layout</symbol>
+        <lines>1-15</lines>
+        <reason>Базовый layout wrapper component для приложения. Можно переиспользовать без изменений для wrapping chat interface.</reason>
+      </artifact>
+      <artifact>
+        <path>frontend-dev/src/services/agui-test.ts</path>
+        <kind>service</kind>
+        <symbol>verifyAgUiInstalled</symbol>
+        <lines>all</lines>
+        <reason>Тестовый utility для проверки AG-UI установки. Показывает как импортировать @ag-ui/client и @ag-ui/core пакеты.</reason>
+      </artifact>
+      <artifact>
+        <path>frontend-dev/src/types/index.ts</path>
+        <kind>types</kind>
+        <symbol>barrel export</symbol>
+        <lines>all</lines>
+        <reason>Barrel export для TypeScript types. Нужно добавить экспорты для новых AG-UI и component типов.</reason>
+      </artifact>
+      <artifact>
+        <path>frontend-dev/src/hooks/index.ts</path>
+        <kind>hooks</kind>
+        <symbol>barrel export</symbol>
+        <lines>all</lines>
+        <reason>Barrel export для custom hooks. Будет экспортировать useAdaptiveUI hook после создания.</reason>
+      </artifact>
+      <artifact>
+        <path>frontend-dev/src/services/index.ts</path>
+        <kind>services</kind>
+        <symbol>barrel export</symbol>
+        <lines>all</lines>
+        <reason>Barrel export для services. Будет экспортировать AgUiClient service после создания.</reason>
+      </artifact>
+    </code>
+
+    <dependencies>
+      <ecosystem name="Node.js/React">
+        <package name="@ag-ui/client" version="^0.0.41" purpose="AG-UI WebSocket client для frontend коммуникации" />
+        <package name="@ag-ui/core" version="^0.0.41" purpose="AG-UI core типы и протокол definitions" />
+        <package name="@copilotkit/react-core" version="^1.10.6" purpose="CopilotKit core функциональность для React" />
+        <package name="@copilotkit/react-ui" version="^1.10.6" purpose="CopilotKit UI компоненты (CopilotChat)" />
+        <package name="react" version="^18.2.0" purpose="React framework" />
+        <package name="react-dom" version="^18.2.0" purpose="React DOM renderer" />
+        <package name="typescript" version="^5.1.0" purpose="TypeScript compiler (strict mode)" />
+        <package name="tailwindcss" version="^3.3.0" purpose="Utility-first CSS framework" />
+        <package name="vite" version="^5.0.0" purpose="Build tool и dev server" />
+      </ecosystem>
+      <ecosystem name="Testing (Dev Dependencies)">
+        <package name="jest" version="^29.7.0" purpose="Test runner (не настроен)" />
+        <package name="@testing-library/react" version="^14.0.0" purpose="React Testing Library" />
+        <package name="@testing-library/jest-dom" version="^6.1.0" purpose="Jest DOM matchers" />
+        <package name="ts-jest" version="^29.1.0" purpose="TypeScript preprocessor для Jest" />
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint type="architecture">Component-First Design: Feature-based folder structure (components/, services/, types/, hooks/)</constraint>
+    <constraint type="architecture">Barrel Exports: Использовать index.ts файлы для чистых imports</constraint>
+    <constraint type="architecture">Hook-Based State: useAdaptiveUI centralized state для dynamic UI management</constraint>
+    <constraint type="architecture">Plugin Architecture: Extensible system для новых UI компонентов в future stories</constraint>
+    <constraint type="code-style">TypeScript Strict Mode: Все новые файлы должны быть strongly typed</constraint>
+    <constraint type="code-style">Functional Components: Использовать React.FC и functional programming подход</constraint>
+    <constraint type="code-style">Tailwind CSS: Utility-first CSS для consistent styling</constraint>
+    <constraint type="dependency">Story 1b Dependency: Backend AG-UI endpoint не существует до реализации Story 1b. WebSocket connection будет fail - нужен graceful error handling</constraint>
+    <constraint type="testing">Jest Not Configured: Testing framework не настроен (technical debt from Story 1a). Использовать manual testing через Browser DevTools и React DevTools</constraint>
+    <constraint type="patterns">Error Boundaries: Обязательное использование для graceful degradation при component failures</constraint>
+    <constraint type="patterns">Responsive Design: Mobile-first approach, работает на всех устройствах</constraint>
+  </constraints>
+
+  <interfaces>
+    <interface>
+      <name>CopilotKit Provider</name>
+      <kind>React Component API</kind>
+      <signature>&lt;CopilotKit runtimeUrl="/api/copilot"&gt;{children}&lt;/CopilotKit&gt;</signature>
+      <path>@copilotkit/react-core</path>
+      <usage>Wrap App component для интеграции с AG-UI backend endpoint</usage>
+    </interface>
+    <interface>
+      <name>CopilotChat</name>
+      <kind>React Component</kind>
+      <signature>&lt;CopilotChat /&gt;</signature>
+      <path>@copilotkit/react-ui</path>
+      <usage>Основной chat interface component для operator-AI коммуникации</usage>
+    </interface>
+    <interface>
+      <name>AGUIEvent</name>
+      <kind>TypeScript Interface</kind>
+      <signature>interface AGUIEvent { type: 'TOOL_CALL_START' | 'STATE_DELTA' | 'TOOL_CALL_END' | 'TEXT_MESSAGE_CONTENT'; data: any; timestamp: string; }</signature>
+      <path>src/types/agui.ts (to be created)</path>
+      <usage>TypeScript типизация для AG-UI WebSocket events</usage>
+    </interface>
+    <interface>
+      <name>UIComponent</name>
+      <kind>TypeScript Interface</kind>
+      <signature>interface UIComponent { id: string; type: string; props: any; }</signature>
+      <path>src/types/components.ts (to be created)</path>
+      <usage>Описание dynamic UI component для adaptive panel</usage>
+    </interface>
+    <interface>
+      <name>useAdaptiveUI</name>
+      <kind>React Hook</kind>
+      <signature>function useAdaptiveUI(): { components: UIComponent[]; updateComponent: (comp: UIComponent) => void; }</signature>
+      <path>src/hooks/useAdaptiveUI.ts (to be created)</path>
+      <usage>Custom hook для управления состоянием dynamic UI components</usage>
+    </interface>
+    <interface>
+      <name>AgUiClient</name>
+      <kind>Service Class</kind>
+      <signature>class AgUiClient { connect(url: string): void; on(event: string, handler: Function): void; }</signature>
+      <path>src/services/AgUiClient.ts (to be created)</path>
+      <usage>WebSocket client для AG-UI protocol коммуникации</usage>
+    </interface>
+  </interfaces>
+
+  <tests>
+    <standards>
+      Jest test framework установлен но не настроен (technical debt from Story 1a). Для этой истории использовать manual testing:
+      - Browser DevTools Network tab для проверки WebSocket connection
+      - React DevTools для проверки component state и props
+      - Visual testing responsive layout на разных размерах экрана
+      - Console logs для debugging error boundaries
+
+      Будущие automated tests (когда Jest настроен):
+      - Unit tests: Jest для hooks и utilities
+      - Component tests: React Testing Library для UI interactions
+      - Integration tests: MSW для mock WebSocket events
+    </standards>
+
+    <locations>
+      <location>frontend-dev/src/**/__tests__/**/*.test.{ts,tsx}</location>
+      <location>frontend-dev/src/**/*.test.{ts,tsx}</location>
+    </locations>
+
+    <ideas>
+      <idea ac="1">Manual: Verify CopilotKit provider renders without errors (React DevTools component tree)</idea>
+      <idea ac="2">Manual: Test chat message input and send functionality in browser</idea>
+      <idea ac="3">Manual: Verify AdaptiveUIPanel renders in layout structure</idea>
+      <idea ac="4">Manual: Test responsive layout на mobile (375px) и desktop (1920px) размерах</idea>
+      <idea ac="5">Manual: Check WebSocket connection status в Browser DevTools Network tab</idea>
+      <idea ac="6">Unit test (future): Test useAdaptiveUI hook state updates with mock events</idea>
+      <idea ac="7">Manual: Throw test error in component to verify error boundary catches it</idea>
+      <idea ac="8">TypeScript: Verify all type definitions compile without errors (tsc --noEmit)</idea>
+      <idea ac="integration">Manual: Full flow test - send message, verify no crashes, check logs for AG-UI events (будет fail пока Story 1b не реализован)</idea>
+    </ideas>
+  </tests>
+</story-context>
