@@ -1,6 +1,6 @@
 # Story 2.a: Chat Interface с CopilotKit Integration
 
-Status: drafted
+Status: ready-for-dev
 
 ## Story
 
@@ -181,7 +181,7 @@ describe('AdaptiveUIPanel', () => {
 
 ### Context Reference
 
-<!-- Path(s) to story context XML will be added here by context workflow -->
+- [Story Context XML](2a-chat-interface-copilotkit-integration.context.xml) - Generated 2025-11-24
 
 ### Agent Model Used
 
