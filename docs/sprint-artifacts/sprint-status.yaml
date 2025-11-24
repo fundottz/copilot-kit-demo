@@ -1,0 +1,65 @@
+# Sprint Status для copilot-kit-demo
+# Создан Scrum Master-ом на основе tech-spec.md
+# Generated: 2025-11-24T10:00:00Z
+
+# generated: 2025-11-24T10:00:00Z
+# project: copilot-kit-demo
+# project_key: copilot-kit-demo
+# tracking_system: file-system
+# story_location: docs/sprint-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic exists in epic file but not contexted
+#   - contexted: Epic tech context created (required before drafting stories)
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - drafted: Story file created in stories folder
+#   - ready-for-dev: Draft approved and story context created
+#   - in-progress: Developer actively working on implementation
+#   - review: Under SM review (via code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - completed: Retrospective has been done
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epics should be 'contexted' before stories can be 'drafted'
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically drafts next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', SM reviews, then Dev moves to 'done'
+
+generated: 2025-11-24T10:00:00Z
+project: copilot-kit-demo
+project_key: copilot-kit-demo
+tracking_system: file-system
+story_location: docs/sprint-artifacts
+
+development_status:
+  # Epic 1: AI Contact Center Copilot с Adaptive UI
+  epic-1: contexted
+  
+  # TRACK A: Frontend Infrastructure (Dev A)
+  1a-frontend-setup-base-components: drafted
+  2a-chat-interface-copilotkit-integration: backlog
+  3a-adaptive-ui-panel-dynamic-rendering: backlog
+  
+  # TRACK B: Backend Infrastructure (Dev B)
+  1b-backend-setup-express-server: backlog
+  2b-mock-ai-service-analysis-logic: backlog
+  3b-websocket-agui-event-handling: backlog
+  
+  # TRACK C: UI Components (Dev C)
+  1c-problem-buttons-component: backlog
+  2c-confirmation-messages-feedback: backlog
+  3c-error-boundaries-fallback-ui: backlog
+  
+  # INTEGRATION: End-to-End (All Devs)
+  4-end-to-end-integration-testing: backlog
+  
+  # Epic 1 Retrospective (Optional)
+  epic-1-retrospective: optional
