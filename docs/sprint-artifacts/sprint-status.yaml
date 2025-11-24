@@ -44,7 +44,7 @@ development_status:
   epic-1: contexted
   
   # TRACK A: Frontend Infrastructure (Dev A)
-  1a-frontend-setup-base-components: drafted
+  1a-frontend-setup-base-components: in-progress
   2a-chat-interface-copilotkit-integration: backlog
   3a-adaptive-ui-panel-dynamic-rendering: backlog
   
