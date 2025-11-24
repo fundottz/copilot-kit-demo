@@ -42,14 +42,14 @@ story_location: docs/sprint-artifacts
 development_status:
   # Epic 1: AI Contact Center Copilot с Adaptive UI
   epic-1: contexted
-  
+
   # TRACK A: Frontend Infrastructure (Dev A)
-  1a-frontend-setup-base-components: drafted
-  2a-chat-interface-copilotkit-integration: backlog
+  1a-frontend-setup-base-components: done
+  2a-chat-interface-copilotkit-integration: drafted
   3a-adaptive-ui-panel-dynamic-rendering: backlog
   
   # TRACK B: Backend Infrastructure (Dev B)
-  1b-backend-setup-express-server: backlog
+  1b-backend-setup-express-server: drafted
   2b-mock-ai-service-analysis-logic: backlog
   3b-websocket-agui-event-handling: backlog
   

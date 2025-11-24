@@ -263,9 +263,10 @@ const AdaptiveUIPanel: React.FC = () => {
 **Frontend:**
 ```json
 {
-  "@ag-ui/protocol": "^1.0.0",
-  "@copilotkit/react-core": "latest", 
-  "@copilotkit/react-ui": "latest",
+  "@ag-ui/client": "^0.0.41",
+  "@ag-ui/core": "^0.0.41",
+  "@copilotkit/react-core": "^1.10.6",
+  "@copilotkit/react-ui": "^1.10.6",
   "react": "^18.2.0",
   "react-dom": "^18.2.0",
   "@types/react": "^18.2.0",
@@ -280,7 +281,7 @@ const AdaptiveUIPanel: React.FC = () => {
 ```json
 {
   "express": "^4.18.2",
-  "@ag-ui/middleware": "^1.0.0", 
+  "@ag-ui/core": "^0.0.41",
   "ws": "^8.14.0",
   "cors": "^2.8.5",
   "@types/express": "^4.17.0",
@@ -431,8 +432,8 @@ src/
 - **Development:** nodemon 3+ + ts-node 10+
 
 **AG-UI Integration:**
-- **Protocol:** @ag-ui/protocol 1.0+ (official client)
-- **Chat UI:** CopilotKit latest (React components)
+- **Protocol:** @ag-ui/client 0.0.41+ and @ag-ui/core 0.0.41+ (official packages)
+- **Chat UI:** CopilotKit 1.10.6+ (React components)
 - **Events:** WebSocket-based real-time communication
 
 ---
@@ -519,7 +520,7 @@ npx create-react-app copilot-kit-demo --template typescript
 cd copilot-kit-demo
 
 # 2. Install dependencies
-npm install @ag-ui/protocol @copilotkit/react-core @copilotkit/react-ui
+npm install @ag-ui/client @ag-ui/core @copilotkit/react-core @copilotkit/react-ui
 npm install --save-dev tailwindcss @types/ws express ws cors
 
 # 3. Development сервера (2 terminals)

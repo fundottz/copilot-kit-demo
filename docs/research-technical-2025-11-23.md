@@ -90,19 +90,19 @@
 
 **TypeScript интеграция [Verified 2025]:**
 ```typescript
-import { AgUiClient } from "@ag-ui/protocol";
+import { AgUiClient } from "@ag-ui/client";
 
 const client = new AgUiClient({
-  transport: "websocket", 
+  transport: "websocket",
   url: "wss://your-proxy.example.com/agents"
 });
 
-client.on("stateUpdate", (evt) => 
+client.on("stateUpdate", (evt) =>
   console.log("New state:", evt.payload)
 );
 
-await client.send("userMessage", { 
-  text: "Hello, agent!" 
+await client.send("userMessage", {
+  text: "Hello, agent!"
 });
 ```
 
